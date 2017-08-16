@@ -41,7 +41,6 @@ DHT dht(DHTPIN, DHTTYPE);
 
 #define SW0 A0   // pin for MENU/change
 #define SW1 A1   // pin for increase value (+)
-#define sound A2 // pin for control alarma
 
 // use for hexa in zecimal conversion
 int zh, uh, ore;
@@ -135,12 +134,6 @@ Wire.endTransmission();
  pinMode(SW1, INPUT);  // N.O. push button switch
   digitalWrite(SW0, HIGH); // pull-ups on
   digitalWrite(SW1, HIGH);
-
-pinMode(sound, OUTPUT); // control buzzer 
-digitalWrite(sound, HIGH);
-delay(200);
-digitalWrite(sound, LOW);
-
 }
 
 void loop() {
