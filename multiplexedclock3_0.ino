@@ -39,9 +39,8 @@ RTC_DS1307 RTC;
 #define DHTTYPE DHT11   // DHT 11 
 DHT dht(DHTPIN, DHTTYPE);
 
-#define SW0 A0   // pin for MENU
-#define SW1 A1   // pin for minutes
-#define SW2 A2   // pin for hours
+#define SW0 A0   // pin for MENU (change)
+#define SW1 A1   // pin for increase value (+)
 
 // use for hexa in zecimal conversion
 int zh, uh, ore;
@@ -125,21 +124,15 @@ Wire.endTransmission();
   pinMode(digit2, OUTPUT);
   pinMode(digit3, OUTPUT);
   pinMode(digit4, OUTPUT);
-  
-//  pinMode(13, OUTPUT);
 
  Serial.begin(9600);
  Serial.println("test for niq_ro");
 
  pinMode(SW0, INPUT);  // for this use a slide switch
-  pinMode(SW1, INPUT);  // N.O. push button switch
-  pinMode(SW2, INPUT);  // N.O. push button switch
+ pinMode(SW1, INPUT);  // N.O. push button switch
 
   digitalWrite(SW0, HIGH); // pull-ups on
   digitalWrite(SW1, HIGH);
-  digitalWrite(SW2, HIGH);
-
-
 }
 
 void loop() {
@@ -286,99 +279,7 @@ if (meniu == 3)  // store data in RTC
  meniu = 0; 
 }
 
-
 } // end main program
-
-
-void set_time()   {
-  byte minutes1 = 0;
-  byte hours1 = 0;
-  byte minutes = 0;
-  byte hours = 0;
-
-  while (!digitalRead(SW0))  // set time switch must be released to exit
-  {
-    minutes1=minutes;
-    hours1=hours;
-    
-     
-    while (!digitalRead(SW1)) // set minutes
-    { 
-     minutes++;  
-   // converting hexa in zecimal:
-    zh = hours / 16;
-    uh = hours - 16 * zh ;
-    ore = 10 * zh + uh; 
-    zm = minutes / 16;
-    um = minutes - 16 * zm ;
-    miniti = 10 * zm + um; 
-    
-     for(int i = 20 ; i >0  ; i--) {
-     displayNumber01(ore*100+miniti); 
-     } 
-      if ((minutes & 0x0f) > 9) minutes = minutes + 6;
-      if (minutes > 0x59) minutes = 0;
-      Serial.print("Minutes = ");
-      if (minutes >= 9) Serial.print("0");
-      Serial.println(minutes, HEX);
-    delay(150);    
-    }
-
- //   while (!digitalRead(SW2)) // set hours
-    while (!digitalRead(SW2)) // set hours
-    { 
-     hours++;          
-     
-   // converting hexa in zecimal:
-    zh = hours / 16;
-    uh = hours - 16 * zh ;
-    ore = 10 * zh + uh; 
-    zm = minutes / 16;
-    um = minutes - 16 * zm ;
-    miniti = 10 * zm + um; 
-    
-     for(int i = 20 ; i >0  ; i--) {
-     displayNumber01(ore*100+miniti); 
-     }
-   
-      
-      if ((hours & 0x0f) > 9) hours =  hours + 6;
-      if (hours > 0x23) hours = 0;
-      Serial.print("Hours = ");
-      if (hours <= 9) Serial.print("0");
-      Serial.println(hours, HEX);
-    delay(150);
-    }
-
-    Wire.beginTransmission(0x68); // activate DS1307
-    Wire.write(0); // where to begin
-    Wire.write(0x00);          //seconds
-    Wire.write(minutes);          //minutes
-    Wire.write(0x80 | hours);    //hours (24hr time)
-    Wire.write(0x06);  // Day 01-07
-    Wire.write(0x01);  // Date 0-31
-    Wire.write(0x05);  // month 0-12
-    Wire.write(0x09);  // Year 00-99
-    Wire.write(0x10); // Control 0x10 produces a 1 HZ square wave on pin 7. 
-    Wire.endTransmission();
-  
-    // converting hexa in zecimal:
-    zh = hours / 16;
-    uh = hours - 16 * zh ;
-    ore = 10 * zh + uh; 
-    zm = minutes / 16;
-    um = minutes - 16 * zm ;
-    miniti = 10 * zm + um; 
-    
-     for(int i = 20 ; i >0  ; i--) {
-     displayNumber01(ore*100+miniti); 
-     }
- //  delay(150);
-    
-  }
-    DateTime now = RTC.now();
-  timp = now.hour()*100+now.minute();
-}
 
 
 void displayNumber01(int toDisplay) {
