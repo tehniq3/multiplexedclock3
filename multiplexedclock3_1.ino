@@ -451,13 +451,13 @@ void lightNumber(int numberToDisplay) {
   
     // F letter made by niq_ro
   case 16:
-    digitalWrite(segA, SEGMENT_OFF);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_ON);
-    digitalWrite(segE, SEGMENT_OFF);
-    digitalWrite(segF, SEGMENT_OFF);
-    digitalWrite(segG, SEGMENT_OFF);
+    digitalWrite(segA, SEGMENT_ON);
+    digitalWrite(segB, SEGMENT_OFF);
+    digitalWrite(segC, SEGMENT_OFF);
+    digitalWrite(segD, SEGMENT_OFF);
+    digitalWrite(segE, SEGMENT_ON);
+    digitalWrite(segF, SEGMENT_ON);
+    digitalWrite(segG, SEGMENT_ON);
     break;
     
   // n letter made by niq_ro
